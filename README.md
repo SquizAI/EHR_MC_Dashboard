@@ -31,10 +31,11 @@ _A powerful dashboard for healthcare analytics, with AI-driven insights for Elec
 - Smart data sampling for large datasets
 
 ### 🤖 AI-Powered Analysis
-- OpenAI-driven insights generation
-- Automatic anomaly detection
+- Dual AI provider support (OpenAI and Google Gemini)
+- Automatic failover between AI providers
 - Pattern recognition in patient journeys
-- Personalized recommendations
+- Actionable recommendations with A2A protocol support
+- Smart data sampling for efficient AI analysis
 
 </td>
 <td width="50%">
@@ -74,7 +75,8 @@ Explore the dashboard with sample data: [EHR MC Dashboard Demo](https://ehr-mc-d
 [![Chart.js](https://img.shields.io/badge/Chart.js-4-FF6384?style=flat-square&logo=chart.js&logoColor=white)](https://www.chartjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-16+-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-4-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com/)
-[![OpenAI](https://img.shields.io/badge/OpenAI_API-GPT--4-412991?style=flat-square&logo=openai&logoColor=white)](https://openai.com/)
+[![OpenAI](https://img.shields.io/badge/OpenAI_API-GPT--4o-412991?style=flat-square&logo=openai&logoColor=white)](https://openai.com/)
+[![Google Gemini](https://img.shields.io/badge/Gemini_API-2.5_Pro-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev/)
 
 </div>
 
@@ -85,9 +87,13 @@ graph TD
     A[Client Browser] -->|HTTP Requests| B[React Frontend]
     B -->|API Calls| C[Node.js Backend]
     C -->|CSV Processing| D[Data Parser]
-    C -->|AI Analysis| E[OpenAI API]
+    C -->|Primary AI| E[OpenAI API]
+    C -->|Secondary AI| G[Google Gemini API]
+    C -->|Google Sheets Access| H[Google Sheets API]
     D -->|Processed Data| F[Dashboard Visualizations]
-    E -->|Insights & Metrics| F
+    E -->|AI Insights| F
+    G -->|AI Insights| F
+    H -->|External Data| D
     F -->|UI Rendering| B
 ```
 
@@ -96,7 +102,9 @@ graph TD
 ### Prerequisites
 
 - Node.js (v16 or higher)
-- OpenAI API Key
+- OpenAI API Key (for GPT-4o)
+- Google Gemini API Key (optional, for Gemini 2.5 Pro)
+- Google Sheets API credentials (optional, for direct sheets integration)
 
 ### Installation
 
@@ -122,9 +130,12 @@ graph TD
    ```bash
    cp .env.example .env
    ```
-   Edit `.env` file and add your OpenAI API key:
+   Edit `.env` file and add your API keys:
    ```
-   OPENAI_API_KEY=your_api_key_here
+   OPENAI_API_KEY=your_openai_api_key_here
+   GEMINI_API_KEY=your_gemini_api_key_here
+   AI_PROVIDER=openai  # or 'gemini' to set default provider
+   GOOGLE_APPLICATION_CREDENTIALS=path/to/google_credentials.json  # optional, for Google Sheets API
    ```
 
 ### Running the Application
